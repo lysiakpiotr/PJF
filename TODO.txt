@@ -1,0 +1,30 @@
+1. dorysować planszę
+	węże
+	drabiny
+	pola z zadaniami - przebieganie wokół bloku
+	detale (chmury?)
+	poprawki
+2. dorobić assety
+	pionki
+	kostka z każdej strony
+	kamienie (ukryte!)
+3. zaplanować rozmieszczenie pionków
+4. ogarnąć podział graczy (+nazywanie graczy)
+5. ekran startowy - zasady, sterowanie, wybór liczby graczy itp.
+6. tablica wyników? z turami zakończenia gry
+7. napisać readme - insturkcja poprawienia wielkości okna, zasady zawarte też tam itp.
+8. rozplanowanie kodu
+9. mechanizm rzutu kostką
+10. klasyczny ruch pionków
+11. ruch pionków na drabinach i wężach
+12. pojawianie się kamieni
+13. przyjęcie/odrzucenie zadania
+14. system turowy
+
+???
+
+?. refactoring
+?. ogarnięcie struktury plików
+?. okrojona wersja do szybszego testowania? kończąca się np. na 30 polu (+ dodanie graficznej reprezentacji tego)
+?. testy
+

@@ -1,0 +1,4 @@
+Snakes & Ladders 	
+1. Proszę dodać do klasycznych elementów gry ukryte przeszkody takie jak: kamień - nie możesz się ruszyć przez 2 kolejki 	
+2. Proszę ograniczyć liczbę graczy do 6 graczy na raz 	
+3. Proszę dodać pola z zadaniami np. aby uzyskać dodatkowy rzut kostką przebiegnij wokół bloku 			
