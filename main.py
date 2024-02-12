@@ -10,18 +10,19 @@ player1 = pygame.Rect((50, 50, 50, 50))
 clock = pygame.time.Clock()
 game_font = pygame.font.Font(None, 40)
 
-background = pygame.image.load("plansza_plus_liczby_demo.png")
+background = pygame.image.load("demo.png")
+icon = pygame.image.load("ikona.png")
 text_surface = game_font.render("Snakes and Ladders", False, 'Dark Green')   #false - antialiasing
-player_surface = pygame.image.load("temp/pionek_szary_test.png")
-player_x_pos = 100
-player_y_pos = 870
+player_surface = pygame.image.load("pionki/pionek_6.png")
+player_x_pos = 87
+player_y_pos = 848
 
-
-run = True
+pygame.display.set_icon(icon) 
+running = True
 
 pygame.display.set_caption("Snakes and Ladders")
 
-while run:
+while running:
 
     screen.fill((255, 255, 255))
 
@@ -40,12 +41,12 @@ while run:
         #odrzuć wyzwanie
         pass
     elif key[pygame.K_ESCAPE]:
-        run = False
+        running = False
         
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            run = False
+            running = False
 
     screen.blit(background, (0, 0))
     screen.blit(text_surface, (300, 50))
