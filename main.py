@@ -1,78 +1,71 @@
 import pygame
-
-pygame.init()
+from dice import Dice
+from player import Player
 
 SCREEN_WIDTH = 1020
 SCREEN_HEIGHT = 1020
 
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
-player1 = pygame.Rect((50, 50, 50, 50))
-clock = pygame.time.Clock()
-game_font = pygame.font.Font(None, 40)
+class Main:    
+    def __init__(self):          
+        self.FONT = pygame.font.SysFont("None", 50)
+        self.TILE_SIZE = 85
+        self.dice = Dice()
+        self.current_player_index = 0
 
-background = pygame.image.load("demo.png")
-icon = pygame.image.load("ikona.png")
-text_surface = game_font.render("Snakes and Ladders", False, 'Dark Green')   #false - antialiasing
-player_surface = pygame.image.load("pionki/pionek_6.png")
-player_x_pos = 87
-player_y_pos = 848
+    def main(self):        
+        screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
+        clock = pygame.time.Clock()
+        background = pygame.image.load("demo.png")
+        icon = pygame.image.load("ikona.png")
 
-pygame.display.set_icon(icon) 
-running = True
+        pygame.display.set_icon(icon) 
+        pygame.display.set_caption("Snakes and Ladders")
 
-pygame.display.set_caption("Snakes and Ladders")
+        # Tekst, który wyświetla się na górze
+        text_surface = self.FONT.render("Snakes and Ladders", False, 'Dark Green')   
 
-while running:
+        num_players = int(input("Podaj liczbę graczy (od 2 do 6): "))
+        players_list = Player.create_players(num_players)
+        current_player = players_list[0]
+        current_player_index = 1
 
-    screen.fill((255, 255, 255))
+        running = True
 
-    pygame.draw.rect(screen, (255, 0, 0), player1)
+        while running:                         
+            screen.fill((255, 255, 255))
+            
+            key = pygame.key.get_pressed()
 
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                    
+                if key[pygame.K_ESCAPE]:
+                    running = False
 
-    #obsluga klawiszy
-    key = pygame.key.get_pressed()
-    if key[pygame.K_d]:
-        #rzuć kostką
-        pass
-    elif key[pygame.K_t]:
-        #przyjmij wyzwanie
-        pass
-    elif key[pygame.K_t]:
-        #odrzuć wyzwanie
-        pass
-    elif key[pygame.K_ESCAPE]:
-        running = False
-        
+            # Ustawienie tła i tekstu
+            screen.blit(background, (0, 0))
+            screen.blit(text_surface, (300, 50))
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+            # Obsługa tury aktualnego gracza
+            current_player = players_list[self.current_player_index]
+            current_player.turn_ended = current_player.player_input(screen, self.dice)
+            
 
-    screen.blit(background, (0, 0))
-    screen.blit(text_surface, (300, 50))
+            # Rysowanie graczy
+            for player in players_list:
+                screen.blit(player.player_surf, (player.player_rect.x, player.player_rect.y))
+            pygame.display.update()
 
-
-    #player_x_pos += 1
-    #player_y_pos += 1
-
-
-    screen.blit(player_surface, (player_x_pos, player_y_pos))
-
-    pygame.display.update()
-    clock.tick(60)
-
-#pygame.quit()
-
-
-
-
-'''
-class Main:
-    def __init__(self) -> None:
-        self.main()
-        pass
-
-    def main(self) -> None:
-        pass
-'''
-
+            # Sprawdzenie warunków zmiany tury
+            if current_player.turn_ended:
+                self.current_player_index = (self.current_player_index + 1) % len(players_list)
+                players_list[self.current_player_index].turn_ended = False
+            
+            pygame.display.update(current_player.player_rect)
+            clock.tick(60)  # 60 fps
+if __name__ == "__main__":
+    pygame.init()
+    pygame.font.init()
+    main = Main()
+    main.main()

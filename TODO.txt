@@ -1,3 +1,6 @@
+(do zakutalizowania)
+
+
 DONE
 1. dorysować planszę
 	węże
