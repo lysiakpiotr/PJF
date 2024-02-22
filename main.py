@@ -7,7 +7,7 @@ SCREEN_HEIGHT = 1020
 
 class Main:    
     def __init__(self):          
-        self.FONT = pygame.font.SysFont("None", 50)
+        self.FONT = pygame.font.SysFont("comicsans", 50)
         self.TILE_SIZE = 85
         self.dice = Dice()
         self.current_player_index = 0
@@ -27,11 +27,11 @@ class Main:
         num_players = int(input("Podaj liczbę graczy (od 2 do 6): "))
         players_list = Player.create_players(num_players)
         current_player = players_list[0]
-        current_player_index = 1
 
         running = True
 
-        while running:                         
+        while running:
+            dt = clock.tick(60)  # 60 fps                         
             screen.fill((255, 255, 255))
             
             key = pygame.key.get_pressed()
@@ -49,21 +49,21 @@ class Main:
 
             # Obsługa tury aktualnego gracza
             current_player = players_list[self.current_player_index]
-            current_player.turn_ended = current_player.player_input(screen, self.dice)
+            current_player.turn_ended = current_player.player_input(screen, self.dice, dt)
             
 
             # Rysowanie graczy
             for player in players_list:
                 screen.blit(player.player_surf, (player.player_rect.x, player.player_rect.y))
-            pygame.display.update()
+            
 
             # Sprawdzenie warunków zmiany tury
             if current_player.turn_ended:
                 self.current_player_index = (self.current_player_index + 1) % len(players_list)
                 players_list[self.current_player_index].turn_ended = False
             
-            pygame.display.update(current_player.player_rect)
-            clock.tick(60)  # 60 fps
+            pygame.display.update()
+            
 if __name__ == "__main__":
     pygame.init()
     pygame.font.init()

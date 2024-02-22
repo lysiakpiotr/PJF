@@ -42,7 +42,7 @@ class Player(pygame.sprite.Sprite):
 
 
 
-    def player_input(self, screen, dice):
+    def player_input(self, screen, dice, dt):
 
         key = pygame.key.get_pressed()
         
@@ -51,7 +51,7 @@ class Player(pygame.sprite.Sprite):
             if dice.is_rolling:
                 return
             tiles_to_move = dice.roll(screen, (dice.dice_x_pos, dice.dice_y_pos))
-            self.update(tiles_to_move)
+            self.update(tiles_to_move, dt)
             return True
             
         elif key[pygame.K_t]:
@@ -82,8 +82,65 @@ class Player(pygame.sprite.Sprite):
             return True
         
     
+    def get_tile_position(self, tiles_to_move):
+        destinated_tile = self.current_tile + tiles_to_move
+        if destinated_tile > 100:
+            return 100
+        
+        if (destinated_tile//self.current_tile)%2 == 0:
+            destinated_x = self.player_rect.x + (destinated_tile - 1)%10 * TILE_SIZE
+        else:
+            destinated_x = self.player_rect.x - (destinated_tile - 1)%10 * TILE_SIZE
+        destinated_y = self.player_rect.y - (destinated_tile - 1)//10 * TILE_SIZE
+        return (destinated_x, destinated_y)
 
-    def update(self, tiles_to_move):
+    def update(self, tiles_to_move, dt):
+        if tiles_to_move == 0 or self.current_tile + tiles_to_move > 100:
+            return
+        
+
+        start_x, start_y = self.player_rect.x, self.player_rect.y
+        '''modulo = self.current_tile%10
+        div = self.current_tile//10'''
+        if (self.current_tile + tiles_to_move)//10 == self.current_tile//10:
+            #lewo/prawo
+            end_x, end_y = self.get_tile_position(tiles_to_move)
+            #góra
+            end_x, end_y = self.get_tile_position(tiles_to_move)
+            #lewo/prawo
+            end_x, end_y = self.get_tile_position(tiles_to_move)
+            
+        else:
+            end_x, end_y = start_x, start_y
+        
+
+        '''if not (abs(self.player_rect.x - end_x) < 1 and abs(self.player_rect.y - end_y) < 1):   #jeśli gracz nie jest w miejscu docelowym
+            # Odległość do pokonania w każdej klatce
+            distance_x = (end_x - start_x) / dt
+            distance_y = (end_y - start_y) / dt
+
+            self.player_rect.x += distance_x * dt
+            self.player_rect.y += distance_y * dt
+            # Zaokrąglenie do najbliższej liczby całkowitej
+            self.player_rect.x = round(self.player_rect.x)
+            self.player_rect.y = round(self.player_rect.y)
+            print(f"gracz {self.number} na polu {self.current_tile} przesuwa się z {start_x, start_y} na {end_x, end_y}")
+        else:
+            self.current_tile = self.current_tile + tiles_to_move'''
+
+        distance_x = end_x - start_x
+        distance_y = end_y - start_y
+
+        self.player_rect.x += distance_x
+        self.player_rect.y += distance_y
+            
+        pygame.display.update(self.player_rect)
+        
+        return
+
+
+
+    '''def update(self, tiles_to_move):
         if tiles_to_move == 0:
             return
         print(f"rusz gracza nr. {self.number} o {tiles_to_move} pól z pola {self.current_tile}")
@@ -163,7 +220,7 @@ class Player(pygame.sprite.Sprite):
             self.player_rect.y -= 1*TILE_SIZE
 
 
-        pygame.display.flip()
+        pygame.display.flip()'''
         
 
 
